@@ -1,0 +1,41 @@
+name: Sync Posts Manifest
+
+# Runs whenever a markdown file in /posts is pushed,
+# and also on any push to main
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'posts/**.md'
+      - 'assets/script.js'
+
+jobs:
+  sync-manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install js-yaml
+        run: npm install js-yaml
+
+      - name: Rebuild POSTS_MANIFEST in script.js
+        run: node .github/scripts/sync-manifest.js
+
+      - name: Commit updated script.js (if changed)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/script.js
+          git diff --cached --quiet || git commit -m "chore: sync POSTS_MANIFEST from posts/*.md [skip ci]"
+          git push
