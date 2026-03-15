@@ -1,0 +1,85 @@
+# ============================================================
+# Decap CMS Configuration for Misham Warsi Blog
+# Docs: https://decapcms.org/docs/configuration-options/
+# ============================================================
+
+backend:
+  name: github
+  # ⚠️  CHANGE THIS to your GitHub username/repo-name
+  repo: YOUR_GITHUB_USERNAME/YOUR_REPO_NAME
+  branch: main   # or 'master' — whichever your default branch is
+
+# Where media files are stored (not used here, but good to have)
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+# ── COLLECTIONS ─────────────────────────────────────────────
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "posts"
+    create: true
+    slug: "{{slug}}"          # filename = URL slug
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - label: "Article ID (URL slug)"
+        name: "id"
+        widget: "string"
+        hint: "Lowercase, hyphens only. e.g. my-new-sap-article — this becomes the URL."
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Excerpt"
+        name: "excerpt"
+        widget: "text"
+        hint: "1–2 sentence summary shown on blog cards."
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options: ["SAP", "Tech", "Tutorial", "Career"]
+
+      - label: "Publish Date"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        time_format: false
+
+      - label: "Date Label (displayed)"
+        name: "dateLabel"
+        widget: "string"
+        hint: "Human-readable date. e.g. April 15, 2025"
+
+      - label: "Reading Time"
+        name: "read"
+        widget: "string"
+        default: "5 min read"
+
+      - label: "Card Icon (emoji)"
+        name: "icon"
+        widget: "string"
+        default: "📄"
+        hint: "One emoji shown on the blog card thumbnail."
+
+      - label: "Card Thumbnail Color"
+        name: "thumb"
+        widget: "select"
+        options:
+          - { label: "Blue",   value: "thumb-blue" }
+          - { label: "Navy",   value: "thumb-navy" }
+          - { label: "Green",  value: "thumb-green" }
+          - { label: "Orange", value: "thumb-orange" }
+          - { label: "Purple", value: "thumb-purple" }
+          - { label: "Teal",   value: "thumb-teal" }
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        hint: "Comma-separated tags. e.g. SAP, S/4HANA, Tutorial"
+
+      - label: "Article Body"
+        name: "body"
+        widget: "markdown"
